@@ -26,9 +26,17 @@ jobs:
         run: docker compose up -d selenoid selenoid-ui
 
       - name: Run tests
-        env:
-          SELENOID_URL: "http://selenoid:4444/wd/hub"
         run: pytest tests --alluredir=allure-results
+          docker compose up -d
+          sleep 5
+          docker compose run --rm test_docker
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results/
 
       - name: Stop containers
         if: always()
