@@ -26,7 +26,6 @@ jobs:
         run: docker compose up -d selenoid selenoid-ui
 
       - name: Run tests
-        env:
         run: pytest tests --alluredir=allure-results
 
       - name: Stop containers
