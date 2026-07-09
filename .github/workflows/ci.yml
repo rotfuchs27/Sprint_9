@@ -26,7 +26,7 @@ jobs:
         run: docker compose up -d selenoid selenoid-ui
 
       - name: Run tests
-        run: pytest tests --alluredir=allure-results
+        run:
           docker compose up -d
           sleep 5
           docker compose run --rm test_docker
