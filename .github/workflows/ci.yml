@@ -1,0 +1,34 @@
+name: Selenoid workflow for UI tests
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  run-selenoid-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Pull browser image
+        run: docker pull selenoid/chrome:128.0
+
+      - name: Start Selenoid
+        run: docker compose up -d selenoid selenoid-ui
+
+      - name: Run tests
+        env:
+        run: pytest tests --alluredir=allure-results
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v
