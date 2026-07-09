@@ -26,10 +26,7 @@ jobs:
         run: docker compose up -d selenoid selenoid-ui
 
       - name: Run tests
-        run:
-          docker compose up -d
-          sleep 5
-          docker compose run --rm test_docker
+        run: docker compose up --build --exit-code-from test_docker
 
       - name: Upload test results
         if: always()
